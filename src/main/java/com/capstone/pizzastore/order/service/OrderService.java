@@ -4,7 +4,6 @@ import com.capstone.pizzastore.order.configuration.MenuServiceClient;
 import com.capstone.pizzastore.order.domain.CustomerOrder;
 import com.capstone.pizzastore.order.domain.OrderItem;
 import com.capstone.pizzastore.order.domain.OrderStatus;
-import com.capstone.pizzastore.order.model.CustomerOrderDto;
 import com.capstone.pizzastore.order.model.ItemDto;
 import com.capstone.pizzastore.order.model.OrderCreateRequest;
 import com.capstone.pizzastore.order.model.OrderCreateRequestDetails;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +40,15 @@ public class OrderService {
         customerOrder.setOrderStatus(OrderStatus.ACCEPTED);
         orderRepository.save(customerOrder);
         return customerOrder;
+    }
+
+    public CustomerOrder getOrderDetails(String orderId) {
+        Optional<CustomerOrder> order = orderRepository.findById(Long.valueOf(orderId));
+        if (order.isEmpty()) {
+            throw new RuntimeException("INVALID ORDER ID");
+        } else {
+            return order.get();
+        }
+
     }
 }

@@ -1,11 +1,12 @@
 package com.capstone.pizzastore.order.controller;
 
 import com.capstone.pizzastore.order.domain.CustomerOrder;
-import com.capstone.pizzastore.order.model.CustomerOrderDto;
 import com.capstone.pizzastore.order.model.OrderCreateRequest;
 import com.capstone.pizzastore.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +24,11 @@ public class OrderController {
         CustomerOrder orderCreateResponse =
                 orderService.createOrder(orderCreateRequest);
         return ResponseEntity.ok(orderCreateResponse);
+    }
+
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<CustomerOrder> getOrderDetails(@PathVariable String orderId) {
+        CustomerOrder order = orderService.getOrderDetails(orderId);
+        return ResponseEntity.ok(order);
     }
 }
